@@ -11,8 +11,6 @@ This repository contains the code and resources for a project focused on impleme
   - [Installation](#installation)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Introduction
 
@@ -40,3 +38,26 @@ Before you begin, ensure you have the following installed:
 
    ```bash
    git clone https://github.com/mugishompozi/programming-languages-concepts.git
+
+## Project Structure
+
+```lua
+/concepts-of-programming-languages
+|
+|  /include
+|  |-- *.h # Header files
+|
+|  /src
+|  |-- .cc # C++ source files
+|
+|  /tests
+|  |  /positive   # Positive Test Cases files
+|  |  |-- .txt # 
+|  |
+|  |  /positive   # Negative Test Cases files
+|  |  |-- .txt # 
+|
+|  LICENCE   # License file
+|  Makefile  # Build automation file
+|  README.md # Project overview and instructions
+```
