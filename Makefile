@@ -30,12 +30,12 @@ debug: all
 all: $(TARGET)
     
 clean: 
-    $(RM) $(OBJECTS) $(DEPS) $(TARGET)
+	$(RM) $(OBJECTS) $(DEPS) $(TARGET)
 
 $(TARGET): $(OBJECTS)
-    $(CC) $(CFLAGS) $(CPPFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ $^
 
 %.o: %.c
-    $(CC) $(CFLAGS) $(CPPFLAGS) -MMD -o $@ -c $<
+	$(CC) $(CFLAGS) $(CPPFLAGS) -MMD -o $@ -c $<
 
 -include $(DEPS)
