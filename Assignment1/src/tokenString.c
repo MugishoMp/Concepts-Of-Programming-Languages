@@ -77,11 +77,11 @@ void tokenize(void* self) {
     char *expression = getExpression((TokenString*)self);
     for (int i = 0; i < (int)strlen(expression); i++){
         
-        TokenStringPair *token = malloc(sizeof(TokenStringPair));
         switch (expression[i]) {
             case ' ':
                 break;
             case '(': {
+                TokenStringPair *token = malloc(sizeof(TokenStringPair));
                 if (token != NULL) {
                     token->token = "BRACKET_OPEN";
                     token->character = "(";
@@ -91,6 +91,7 @@ void tokenize(void* self) {
                 break;
             }
             case ')': {
+                TokenStringPair *token = malloc(sizeof(TokenStringPair));
                 if (token != NULL) {
                     token->token = "BRACKET_CLOSE";
                     token->character = ")";
@@ -99,6 +100,7 @@ void tokenize(void* self) {
                 break;
             }
             case '\\': {
+                TokenStringPair *token = malloc(sizeof(TokenStringPair));
                 if (token != NULL) {
                     token->token = "BACKSLASH";
                     token->character = "\\";
@@ -116,7 +118,6 @@ void tokenize(void* self) {
             }
         }
     }
-    printf("token string size: %d \n", ((TokenString*)self)->tokenString->size);
 }
 
 TokenStringPair * tokenizeVariable(int *i, void* self) {
@@ -201,4 +202,35 @@ TokenString * createTokenString(char * expression) {
         obj->printTokenString = printTokenString;
 
     return obj;
+}
+
+void destroyTokenString(TokenString *obj) {
+    if (obj == NULL) {
+        return;  // Nothing to free
+    }
+
+    // Free each TokenStringPair
+    for (int i = 0; i < obj->tokenString->size - 3; ++i) {
+        // Assume that the token and character strings in each TokenStringPair
+        // were dynamically allocated; if not, remove these lines
+
+        // Only the character in dynamically allocated, and only in the case
+        // for the variable token
+        if (strcmp(obj->tokenString->array[i]->token, "VARIABLE") == 0) {
+            // if token == VARIABLE
+            free(obj->tokenString->array[i]->character);
+        }
+
+        // Free the TokenStringPair itself
+        free(obj->tokenString->array[i]);
+    }
+
+    // Free the array of TokenStringPairs
+    free(obj->tokenString->array);
+
+    // Free the TokenCharacterPairArray
+    free(obj->tokenString);
+
+    // Free the TokenString object itself
+    free(obj);
 }

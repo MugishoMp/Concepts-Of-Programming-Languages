@@ -27,7 +27,7 @@ typedef struct {
     // tokenStrings
 
     int * (*getIndex)(void*);
-    void (*setIndex)(char *, void*);
+    void (*setIndex)(int, void*);
     char * (*getExpression)(void*);
     void (*setExpression)(char *, void*);
     TokenCharacterPairArray * (*getTokenString)(void*);
@@ -43,5 +43,6 @@ typedef struct {
 // constructor 
 TokenString * createTokenString(char * expression);
 // destructor
+void destroyTokenString(TokenString *obj);
 
 #endif // TOKENSTRING_H

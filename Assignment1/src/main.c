@@ -35,6 +35,7 @@ int main(int argc, char* argv[]) {
             checkExpression(&expression);
         } else {
             // an error occurred
+            free(expression);
             return 1;
         }
 
