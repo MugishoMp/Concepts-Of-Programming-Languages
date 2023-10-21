@@ -1,0 +1,21 @@
+{
+    "files.associations": {
+        "tokenstring.h": "c",
+        "stdio.h": "c",
+        "stdlib.h": "c",
+        "cmath": "c",
+        "cstdarg": "c",
+        "cstddef": "c",
+        "cstdio": "c",
+        "cstdlib": "c",
+        "type_traits": "c",
+        "limits": "c",
+        "*.tcc": "c",
+        "cstdint": "c",
+        "typeinfo": "c",
+        "custom_headers.h": "c",
+        "array": "c",
+        "errorhandling.h": "c",
+        "tuple": "c"
+    }
+}
