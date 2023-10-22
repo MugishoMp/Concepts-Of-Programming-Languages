@@ -40,9 +40,65 @@ void setTokenStringLexer(TokenString * tokenString, void* self) {
     ((Lexer*)self)->tokenString = tokenString;
 }
 
+
+void expr(ParseTree * parseTree, Node * parentNode, void* self) {
+    Lexer * this = ((Lexer*)self);
+    Node * node = malloc(sizeof(Node));
+    node->info.expression = "EXPR";
+    node->info.string = " ";
+    node->parent = parentNode;
+    parseTree->addNode(node, parseTree);
+
+    this->lexpr(parseTree, node, this);
+    this->expr1(parseTree, node, this);
+}
+
+void expr1(ParseTree * parseTree, Node * parentNode, void* self) {
+    Lexer * this = ((Lexer*)self);
+    Node * node = malloc(sizeof(Node));
+    node->info.expression = "EXPR1";
+    node->info.string = " ";
+    node->parent = parentNode;
+    parseTree->addNode(node, parseTree);
+
+    if (!(this->isEmpty(this)) && !(strcmp(this->peek(this)->token, "BRACKET_CLOSE") && this->numberOfOpenBrackets > 0)) {
+        this->lexpr(parseTree, node, this);
+        this->expr1(parseTree, node, this);
+    }
+}
+
+void lexpr(ParseTree * parseTree, Node * parentNode, void* self) {
+    Lexer * this = ((Lexer*)self);
+
+}
+
+void pexpr(ParseTree * parseTree, Node * parentNode, void* self) {
+    Lexer * this = ((Lexer*)self);
+
+}
+
+bool isEmpty(void* self) {
+    Lexer * this = ((Lexer*)self);
+    return ((unsigned int) this->index >= this->tokenString->getTokenString(this->tokenString)->size);
+
+}
+
+TokenStringPair * peek(void* self) {
+    Lexer * this = ((Lexer*)self);
+    TokenStringPair * token = this->tokenString->getTokenByIndex(this->index,this->tokenString);
+    return token;
+}
+
+void consume(void* self) {
+    Lexer * this = ((Lexer*)self);
+    this->index++;
+}
+
+
 Lexer * createLexer(TokenString * tokenString) {
-    Lexer * obj = malloc(sizeof(TokenString));
+    Lexer * obj = malloc(sizeof(Lexer));
     if (obj == NULL) {
+        longjmp(memoryAllocationException, 1);
         return NULL;
     }
 
@@ -59,10 +115,22 @@ Lexer * createLexer(TokenString * tokenString) {
         obj->getTokenString = getTokenStringLexer;
         obj->setTokenString = setTokenStringLexer;
 
+        obj->expr = expr;
+        obj->expr1 = expr1;
+        obj->lexpr = lexpr;
+        obj->pexpr = pexpr;
+        obj->isEmpty = isEmpty;
+        obj->peek = peek;
+        obj->consume = consume;
+
     return obj;
 }
 
 void destroyLexer(Lexer *obj) {
+    if (obj == NULL) {
+        return;  // Nothing to free
+    }
+    destroyTokenString(obj->getTokenString(obj));
     // Free the TokenString object itself
     free(obj);
 }

@@ -13,12 +13,12 @@
 #include <tokenString.h>
 #include <node.h>
 #include <parseTree.h>
+#include <custom_headers.h>
 
 typedef struct {
     int index;
     int numberOfOpenBrackets;
     TokenString * tokenString;
-//     // tokenStrings
 
     int (*getIndex)(void*);
     void (*setIndex)(int, void*);
@@ -27,13 +27,13 @@ typedef struct {
     TokenString * (*getTokenString)(void*);
     void (*setTokenString)(TokenString *, void*);
 
-    // void (*expr) (ParseTree *, Node *, void*);
-    // void (*expr1) (ParseTree *, Node *, void*);
-    // void (*lexpr) (ParseTree *, Node *, void*);
-    // void (*pexpr) (ParseTree *, Node *, void*);
-    // bool (*isEmpty) (void*);
-    // Token * (*peek) (void*);
-    // void (*consume) (void*);
+    void (*expr) (ParseTree *, Node *, void*);
+    void (*expr1) (ParseTree *, Node *, void*);
+    void (*lexpr) (ParseTree *, Node *, void*);
+    void (*pexpr) (ParseTree *, Node *, void*);
+    bool (*isEmpty) (void*);
+    TokenStringPair * (*peek) (void*);
+    void (*consume) (void*);
 
 
 } Lexer;

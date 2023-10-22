@@ -127,7 +127,7 @@ TokenStringPair * tokenizeVariable(int *i, void* self) {
         && !(expression[*i]  >= '0' && expression[*i] <= '9')) {
         printf("Error::TokenString::tokenizeVariable: ");
         printf("Variable not starting with letter from latin alphabet");
-        longjmp(env2, 1);
+        longjmp(tokenStringException, 1);
     }
 
     // Initialize an empty string
@@ -136,7 +136,7 @@ TokenStringPair * tokenizeVariable(int *i, void* self) {
         // Handle memory allocation error
         printf("Error::TokenString::tokenizeVariable: ");
         printf("Could not allocate space for variable string");
-        longjmp(env2, 1);
+        longjmp(tokenStringException, 1);
     }
     variableString[0] = '\0';  // Null-terminate the string
     size_t len = 0;  // Current length of the string
@@ -159,6 +159,11 @@ TokenStringPair * tokenizeVariable(int *i, void* self) {
     return token;
 }
 
+
+TokenStringPair * getTokenByIndex(int i, void* self) {
+    return ((TokenString*)self)->tokenString->array[i];
+}
+
 void printExpression(void* self) {
     printf("Expression: %s \n", ((TokenString*)self)->expression);
 }
@@ -175,6 +180,7 @@ void printTokenString(void* self) {
 TokenString * createTokenString(char * expression) {
     TokenString * obj = malloc(sizeof(TokenString));
     if (obj == NULL) {
+        longjmp(memoryAllocationException, 1);
         return NULL;
     }
 
@@ -183,8 +189,14 @@ TokenString * createTokenString(char * expression) {
         obj->expression = expression;
         
         obj->tokenString = malloc(sizeof(TokenCharacterPairArray));
+        if (obj->tokenString == NULL) {
+            return NULL;  // Memory allocation failed
+        }
         obj->tokenString->size = 0;
         obj->tokenString->array = malloc(obj->tokenString->size * sizeof(char *));
+        if (obj->tokenString->array == NULL) {
+            return NULL;  // Memory allocation failed
+        }
 
     // functions
         // ## getters and setters
@@ -196,6 +208,7 @@ TokenString * createTokenString(char * expression) {
         obj->tokenize = tokenize;
         obj->tokenizeVariable = tokenizeVariable;
         obj->appendTokenStringPair = appendTokenStringPair;
+        obj->getTokenByIndex = getTokenByIndex;
 
         // ## print functions
         obj->printExpression = printExpression;

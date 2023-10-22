@@ -23,6 +23,8 @@
  */
 
 extern jmp_buf env;
-extern jmp_buf env2;
+extern jmp_buf tokenStringException;
+extern jmp_buf lexerException;
+extern jmp_buf memoryAllocationException;
 
 #endif // ERROR_HANDLING_H

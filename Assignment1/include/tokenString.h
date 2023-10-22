@@ -34,7 +34,8 @@ typedef struct {
 
     void (*appendTokenStringPair)(TokenStringPair *, void*);
     void (*tokenize)(void*);
-    TokenStringPair * (*tokenizeVariable)(int *i, void*);
+    TokenStringPair * (*tokenizeVariable)(int *, void*);
+    TokenStringPair * (*getTokenByIndex)(int, void*);
 
     void (*printExpression)(void*);
     void (*printTokenString)(void*);

@@ -23,8 +23,10 @@ typedef struct {
  * and Abstract Syntax Tree.
  *
  */
-struct Node
-{
+// Forward declaration of Node for self-referential structures
+typedef struct Node Node;
+
+struct Node {
     ExpressionStringPair info;
     Node *parent;
     Node *leftChild;

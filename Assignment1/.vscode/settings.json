@@ -43,6 +43,8 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "cinttypes": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "custom_headers.h": "c",
+        "tokenstring.h": "c"
     }
 }

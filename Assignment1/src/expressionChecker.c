@@ -1,5 +1,5 @@
 /**
- * @file expressionChecker.h
+ * @file expressionChecker.c
  * @author Mugisho Mpozi s2440547
  * @brief 
  * @version 0.1
@@ -12,37 +12,50 @@
 #include "tokenString.h"
 #include "errorHandling.h"
 
-jmp_buf env2;
+jmp_buf tokenStringException;
+jmp_buf memoryAllocationException;
 
 void checkExpression(char **expression) {
 
-    // read expression string 
-    TokenString * tokenString = createTokenString(*expression);
-    // try-catch block
-    if (setjmp(env2) == 0) {
-        // tokenString->printExpression(tokenString);
+    if (setjmp(tokenStringException) == 0) {
+        // read expression string 
+        TokenString * tokenString = createTokenString(*expression);
+        // try-catch block
+        if (setjmp(tokenStringException) == 0) {
+            // create a string of tokens form the original expression
+            tokenString->getTokenString(tokenString);
+            // tokenString->printTokenString(tokenString);
 
-        // create a string of tokens form the original expression
-        tokenString->getTokenString(tokenString);
-        // tokenString->printTokenString(tokenString);
+        } else {
+            printf("Error occurred::TokenString\n");
+            destroyTokenString(tokenString);
+            return;
+        }
 
-        // // put this string of tokens into a lexer
+        // put this string of tokens into a lexer
         Lexer *lexer = createLexer(tokenString); 
-        destroyLexer(lexer);
-        // // do lexical analysis on this string of tokens
-        // // and give it an empty parse tree to fill
-        // ParseTree * parseTree = new ParseTree();
+        // and give it an empty parse tree to fill
+        ParseTree * parseTree = createParseTree();
 
-        // // and build it while doing the lexical analysis
-        // l->expr(parseTree, nullptr);
-        // // parseTree->print();
-        
-        destroyTokenString(tokenString);
+        if (setjmp(tokenStringException) == 0) {
+
+            // build parse tree top down while doing the lexical analysis
+            lexer->expr(parseTree, NULL, lexer);
+            // parseTree->print();
+        } else {
+            printf("Error occurred::Lexer\n");
+            destroyParseTree(parseTree);
+            destroyLexer(lexer);
+            return;
+        }
+
+        // destroyLexer will also take care of destroying the tokenString
+        destroyLexer(lexer);
+        destroyParseTree(parseTree);
     } else {
-        printf("Error occurred. Cleaning up token string before exitintg\n");
-        destroyTokenString(tokenString);
+        printf("Error occurred. problem allocating memory\n");
         return;
     }
-    
+
     return;
 }
