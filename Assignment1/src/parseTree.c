@@ -99,7 +99,7 @@ void printParseTree(void* self) {
     }
     
     for (int i = 0; i < this->size; i++) {
-        printf("%s\n", this->nodes[i]->info.expression);
+        printf("parsetree index %d: %s\n", i, this->nodes[i]->info.expression);
     }
 
 }

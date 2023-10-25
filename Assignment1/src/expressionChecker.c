@@ -14,6 +14,7 @@
 
 jmp_buf tokenStringException;
 jmp_buf memoryAllocationException;
+jmp_buf lexerException;
 
 void checkExpression(char **expression) {
 
@@ -32,18 +33,18 @@ void checkExpression(char **expression) {
             return;
         }
 
-        // put this string of tokens into a lexer
-        Lexer *lexer = createLexer(tokenString); 
         // and give it an empty parse tree to fill
         ParseTree * parseTree = createParseTree();
+        // put this string of tokens into a lexer
+        Lexer *lexer = createLexer(tokenString); 
 
-        if (setjmp(tokenStringException) == 0) {
+        if (setjmp(lexerException) == 0) {
 
-            // build parse tree top down while doing the lexical analysis
+            // // build parse tree top down while doing the lexical analysis
             lexer->expr(parseTree, NULL, lexer);
-            // parseTree->print();
+            // // parseTree->print();
         } else {
-            printf("Error occurred::Lexer\n");
+            printf("Error occurred::Lexical Analysis\n");
             destroyParseTree(parseTree);
             destroyLexer(lexer);
             return;
