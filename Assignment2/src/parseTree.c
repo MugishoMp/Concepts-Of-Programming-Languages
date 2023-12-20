@@ -93,25 +93,25 @@ void removeNode(Node * node, void* self) {
 
 
 void printString(Node * root) {
-    printf("test-1\n");
+    // printf("test-1\n");
     if (root == NULL) {
-        printf("test0\n");
+        // printf("test0\n");
         return;
     }
 
-    printf("test1\n");
-    printf("test1: %d\n", root->index);
-    printf("test1.1\n");
+    // printf("test1\n");
+    // printf("test1: %d\n", root->index);
+    // printf("test1.1\n");
     if (root->singleChild != NULL){
-        printf("test2a\n");
+        // printf("test2a\n");
         // printf("%s", root->info.string);
         printString(root->singleChild);
-        printf("test3\n");
+        // printf("test3\n");
     } else {
-        printf("test2b\n");
+        // printf("test2b\n");
         if (root->leftChild != NULL) printString(root->leftChild);
         // printf("%s", root->info.string);
-        printf("test2c\n");
+        // printf("test2c\n");
         if (root->rightChild != NULL) printString(root->rightChild);
     }
 
@@ -136,7 +136,7 @@ void printParseTree(void* self) {
 
 
 
-ParseTree * createParseTree() {
+ParseTree * createParseTree(void) {
     ParseTree * obj = malloc(sizeof(ParseTree));
     if (obj == NULL) {
         longjmp(memoryAllocationException, 1);

@@ -11,6 +11,7 @@
 #include "lexer.h"
 #include "tokenString.h"
 #include "errorHandling.h"
+#include "expressionChecker.h"
 
 jmp_buf tokenStringException;
 jmp_buf memoryAllocationException;

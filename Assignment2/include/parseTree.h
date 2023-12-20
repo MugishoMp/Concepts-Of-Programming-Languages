@@ -33,7 +33,7 @@ typedef struct {
 } ParseTree;
 
 // constructor 
-ParseTree * createParseTree();
+ParseTree * createParseTree(void);
 // destructor
 void destroyParseTree(ParseTree * obj);
 

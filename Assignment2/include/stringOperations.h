@@ -23,3 +23,4 @@
 void appendToString(char *string, size_t *stringLength, char character);
 
 #endif // STRING_OPERATIONS
+
