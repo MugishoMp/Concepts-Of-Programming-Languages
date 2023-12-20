@@ -11,6 +11,7 @@ This repository contains the code and resources for a project focused on impleme
   - [Installation](#installation)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
+- [Things to note](#things-to-note)
 
 ## Introduction
 
@@ -30,7 +31,6 @@ The aim of this project is to provide a practical understanding of fundamental c
 Before you begin, ensure you have the following installed:
 
 - A C compiler (e.g., [GCC](https://gcc.gnu.org/))
-- [Any other dependencies, libraries, or tools]
 
 ### Installation
 
@@ -44,20 +44,41 @@ Before you begin, ensure you have the following installed:
 ```lua
 /concepts-of-programming-languages
 |
-|  /include
-|  |-- *.h # Header files
 |
-|  /src
-|  |-- .cc # C++ source files
-|
-|  /tests
-|  |  /positive   # Positive Test Cases files
-|  |  |-- .txt # 
+|  /Assignment1
+|  |  /include
+|  |  |-- *.h # Header files
 |  |
-|  |  /positive   # Negative Test Cases files
+|  |  /src
+|  |  |-- .cc # C++ source files
+|  |
+|  |  /tests
+|  |  |  /positive   # Positive Test Cases files
+|  |  |  |-- .txt # 
+|  |  |
+|  |  |  /positive   # Negative Test Cases files
 |  |  |-- .txt # 
+|
+|
+|
+|  /Assignment4
+|  | 
+|  | . . .
+|  | 
+|
+|
+|
+|  /Assignment3
+|  | 
+|  | . . .
+|  | 
+|
 |
 |  LICENCE   # License file
 |  Makefile  # Build automation file
 |  README.md # Project overview and instructions
 ```
+
+## Things to note
+Lexer: the lexer doesn't have a separate warning for a missing opening bracket.
+It will give the warning Missing Variable if this is the case.

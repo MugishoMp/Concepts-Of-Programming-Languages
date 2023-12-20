@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "tokenstring.h": "c",
+        "errorhandling.h": "c"
+    }
+}

@@ -37,9 +37,9 @@ bool readInput(char **expression, const char *readFileName) {
     int ch;
 
     while ((ch = fgetc(inputFile)) != EOF) {
-        // if (ch != '\n') {
-        (*expression)[index++] = (char)ch;
-        // }
+        if (ch != '\n') {
+            (*expression)[index++] = (char)ch;
+        }
     }
 
     (*expression)[fileSize] = '\0'; // Add null terminator to indicate end of string

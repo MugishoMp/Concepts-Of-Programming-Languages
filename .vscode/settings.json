@@ -16,6 +16,8 @@
         "custom_headers.h": "c",
         "array": "c",
         "errorhandling.h": "c",
-        "tuple": "c"
+        "tuple": "c",
+        "random": "c",
+        "string.h": "c"
     }
 }

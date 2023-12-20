@@ -16,14 +16,34 @@ jmp_buf tokenStringException;
 jmp_buf memoryAllocationException;
 jmp_buf lexerException;
 
+
+/* Function to check if a character is a whitespace character */
+int isWhitespace(char c) {
+    return (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\v' || c == '\f');
+}
+
+/* Function to check if char **expression is empty or only contains whitespace characters */
+int isEmptyExpression(char *expression) {
+    if (expression == NULL) {
+        return 1; // Consider NULL as empty
+    }
+
+    for (int i = 0; expression[i] != '\0'; i++) {
+        if (!isWhitespace(expression[i])) {
+            return 0; // Found a non-whitespace character
+        }
+    }
+
+    return 1; // String is empty or contains only whitespace
+}
+
+
 void checkExpression(char **expression) {
 
-    //expression check try catch block
     if (setjmp(tokenStringException) == 0) {
-        // TOKEN STRING
+        // read expression string 
         TokenString * tokenString = createTokenString(*expression);
-
-        //token string try catch block
+        // try-catch block
         if (setjmp(tokenStringException) == 0) {
             // create a string of tokens form the original expression
             tokenString->getTokenString(tokenString);
@@ -35,9 +55,6 @@ void checkExpression(char **expression) {
             return;
         }
 
-
-
-        // LEXER
         // and give it an empty parse tree to fill
         ParseTree * parseTree = createParseTree();
         // put this string of tokens into a lexer
@@ -45,10 +62,10 @@ void checkExpression(char **expression) {
 
         if (setjmp(lexerException) == 0) {
 
-            // build parse tree top down while doing the lexical analysis
+            // // build parse tree top down while doing the lexical analysis
             lexer->expr(parseTree, NULL, lexer);
-            // parseTree->printParseTree(parseTree);
-            parseTree->printDisambiguatedExpression(parseTree);
+            // // parseTree->print();
+            parseTree->printParseTree(parseTree);
         } else {
             printf("Error occurred::Lexical Analysis\n");
             destroyParseTree(parseTree);
@@ -56,9 +73,6 @@ void checkExpression(char **expression) {
             return;
         }
 
-
-
-        // CLEANUP
         // destroyLexer will also take care of destroying the tokenString
         destroyLexer(lexer);
         destroyParseTree(parseTree);
