@@ -29,11 +29,13 @@ typedef struct {
     void (*addNode)(Node *, void*);
     void (*removeNode)(Node *, void*);
     void (*printParseTree)(void*);
+    void (*printDisambiguatedExpression)(void*);
+    
 
 } ParseTree;
 
 // constructor 
-ParseTree * createParseTree(void);
+ParseTree * createParseTree();
 // destructor
 void destroyParseTree(ParseTree * obj);
 

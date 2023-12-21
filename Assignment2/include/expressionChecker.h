@@ -10,10 +10,6 @@
 #ifndef EXPRESSION_CHECKER_H
 #define EXPRESSION_CHECKER_H
 
-int isWhitespace(char c);
-
-int isEmptyExpression(char *expression);
-
 /**
  * @brief reads the expression string
  *
@@ -27,7 +23,5 @@ int isEmptyExpression(char *expression);
  * otherwise.
  */
 void checkExpression(char **expression);
-
-
 
 #endif // EXPRESSION_CHECKER_H

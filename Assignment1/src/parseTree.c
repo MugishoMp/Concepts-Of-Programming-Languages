@@ -104,44 +104,54 @@ void printParseTree(void* self) {
 
 }
 
-void inorder_walk(Node *root) {
+void inorderWalk(Node *root) {
     if (root == NULL) {
         return;
     }
 
     if (root->leftChild != NULL) {
-        inorder_walk(root->leftChild);
+        // if this node has a direct
+        if ((strcmp(root->info.expression, "EXPR") == 0)) {
+                printf("(");
+        }
+        inorderWalk(root->leftChild);
     }
+
 
     // Visit the current node
     if (strcmp(root->info.expression, "BACKSLASH") == 0)
         printf("\\");
 
+    if ((strcmp(root->info.expression, "VARIABLE") == 0)) {
+            printf("(");
+    }
     printf("%s", root->info.string);
+    if ((strcmp(root->info.expression, "VARIABLE") == 0)) {
+            printf(")");
+    }
 
 
     // If the node has a single child, visit it next
     if (root->singleChild != NULL) {
         
-        if (strcmp(root->singleChild->info.expression, "EXPR") == 0 || (strcmp(root->singleChild->info.expression, "VARIABLE") == 0))
-            printf("(");
-        inorder_walk(root->singleChild);
-        if (strcmp(root->singleChild->info.expression, "EXPR") == 0 || (strcmp(root->singleChild->info.expression, "VARIABLE") == 0))
-            printf(")");
+        inorderWalk(root->singleChild);
     }
 
     // If the node has a right child, visit it last
     if (root->rightChild != NULL) {
-        inorder_walk(root->rightChild);
+        inorderWalk(root->rightChild);
+        
+        if ((strcmp(root->info.expression, "EXPR") == 0)) {
+                printf(")");
+        }
     }
+    return;
 }
 
 void printDisambiguatedExpression (void* self) {
     ParseTree * this = ((ParseTree*)self);
     
-    // printf("(");
-    inorder_walk(this->root);
-    // printf(")");
+    inorderWalk(this->root);
 }
 
 ParseTree * createParseTree() {

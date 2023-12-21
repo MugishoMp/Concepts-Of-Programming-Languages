@@ -43,23 +43,32 @@ void setTokenStringLexer(TokenString * tokenString, void* self) {
 
 void expr(ParseTree * parseTree, Node * parentNode, void* self) {
     Lexer * this = ((Lexer*)self);
+
     Node * node = malloc(sizeof(Node));
     node->info.expression = "EXPR";
-    node->info.string = " ";
+    node->info.string = "";
     node->parent = parentNode;
+    node->singleChild = NULL;
+    node->leftChild = NULL;
+    node->rightChild = NULL;
+
     parseTree->addNode(node, parseTree);
-    // printf("test: %s\n", parseTree->getRoot(parseTree)->info.expression);
-    // parseTree->printParseTree(parseTree);
+
     this->lexpr(parseTree, node, this);
     this->expr1(parseTree, node, this);
 }
 
 void expr1(ParseTree * parseTree, Node * parentNode, void* self) {
     Lexer * this = ((Lexer*)self);
+
     Node * node = malloc(sizeof(Node));
     node->info.expression = "EXPR1";
     node->info.string = "";
     node->parent = parentNode;
+    node->singleChild = NULL;
+    node->leftChild = NULL;
+    node->rightChild = NULL;
+    
     parseTree->addNode(node, parseTree);
     // parseTree->printParseTree(parseTree);
 
@@ -71,10 +80,15 @@ void expr1(ParseTree * parseTree, Node * parentNode, void* self) {
 
 void lexpr(ParseTree * parseTree, Node * parentNode, void* self) {
     Lexer * this = ((Lexer*)self);
+
     Node * node = malloc(sizeof(Node));
     node->info.expression = "LEXPR";
     node->info.string = "";
     node->parent = parentNode;
+    node->singleChild = NULL;
+    node->leftChild = NULL;
+    node->rightChild = NULL;
+
     parseTree->addNode(node, parseTree);
     // parseTree->printParseTree(parseTree);
 
@@ -89,9 +103,11 @@ void lexpr(ParseTree * parseTree, Node * parentNode, void* self) {
             }
             strcpy(string, this->peek(this)->character);
             node2->info.string = string;
-            node2->parent = parentNode;
+            node2->parent = node;
+            node2->singleChild = NULL;
+            node2->leftChild = NULL;
+            node2->rightChild = NULL;
             parseTree->addNode(node2, parseTree);
-            // parseTree->printParseTree(parseTree);
 
             this->consume(this);
 
@@ -99,7 +115,7 @@ void lexpr(ParseTree * parseTree, Node * parentNode, void* self) {
                 printf("Lexer::Error:: Missing expression after lamda abstraction\n");
                 longjmp(lexerException, 1);
             }
-            this->lexpr(parseTree, node, this);
+            this->lexpr(parseTree, node2, this);
         } else {
             printf("Lexer::Error:: Missing variable after lambda\n");
             longjmp(lexerException, 1);
@@ -116,6 +132,9 @@ void pexpr(ParseTree * parseTree, Node * parentNode, void* self) {
     node->info.expression = "PEXPR";
     node->info.string = "";
     node->parent = parentNode;
+    node->singleChild = NULL;
+    node->leftChild = NULL;
+    node->rightChild = NULL;
     parseTree->addNode(node, parseTree);
     // parseTree->printParseTree(parseTree);
 
@@ -143,16 +162,18 @@ void pexpr(ParseTree * parseTree, Node * parentNode, void* self) {
 
     } else if (!(this->isEmpty(this)) && (strcmp(this->peek(this)->token, "VARIABLE") == 0)) {
         Node * node2 = malloc(sizeof(Node));
-        node2->info.expression = "PEXPR";
+        node2->info.expression = "VARIABLE";
         char *string = malloc(strlen(this->peek(this)->character) + 1);
         if (string == NULL) {
             longjmp(memoryAllocationException, 1);
         }
         strcpy(string, this->peek(this)->character);
         node2->info.string = string;
-        node2->parent = parentNode;
+        node2->parent = node;
+        node2->singleChild = NULL;
+        node2->leftChild = NULL;
+        node2->rightChild = NULL;
         parseTree->addNode(node2, parseTree);
-        // parseTree->printParseTree(parseTree);
         this->consume(this);
     } else {
         printf("Lexer::Error:: Missing variable\n");

@@ -91,32 +91,6 @@ void removeNode(Node * node, void* self) {
     // removes the node and its subtree?
 }
 
-
-void printString(Node * root) {
-    // printf("test-1\n");
-    if (root == NULL) {
-        // printf("test0\n");
-        return;
-    }
-
-    // printf("test1\n");
-    // printf("test1: %d\n", root->index);
-    // printf("test1.1\n");
-    if (root->singleChild != NULL){
-        // printf("test2a\n");
-        // printf("%s", root->info.string);
-        printString(root->singleChild);
-        // printf("test3\n");
-    } else {
-        // printf("test2b\n");
-        if (root->leftChild != NULL) printString(root->leftChild);
-        // printf("%s", root->info.string);
-        // printf("test2c\n");
-        if (root->rightChild != NULL) printString(root->rightChild);
-    }
-
-}
-
 void printParseTree(void* self) {
     ParseTree * this = ((ParseTree*)self);
     if ((int) this->size == 0) {
@@ -124,19 +98,63 @@ void printParseTree(void* self) {
         return;
     }
     
-    printf("test0");
     for (int i = 0; i < this->size; i++) {
         printf("parsetree index %d: %s\n", i, this->nodes[i]->info.expression);
     }
 
-    printString(this->getRoot(this));
-
-
 }
 
+void inorderWalk(Node *root) {
+    if (root == NULL) {
+        return;
+    }
+
+    if (root->leftChild != NULL) {
+        // if this node has a direct
+        if ((strcmp(root->info.expression, "EXPR") == 0)) {
+                printf("(");
+        }
+        inorderWalk(root->leftChild);
+    }
 
 
-ParseTree * createParseTree(void) {
+    // Visit the current node
+    if (strcmp(root->info.expression, "BACKSLASH") == 0)
+        printf("\\");
+
+    if ((strcmp(root->info.expression, "VARIABLE") == 0)) {
+            printf("(");
+    }
+    printf("%s", root->info.string);
+    if ((strcmp(root->info.expression, "VARIABLE") == 0)) {
+            printf(")");
+    }
+
+
+    // If the node has a single child, visit it next
+    if (root->singleChild != NULL) {
+        
+        inorderWalk(root->singleChild);
+    }
+
+    // If the node has a right child, visit it last
+    if (root->rightChild != NULL) {
+        inorderWalk(root->rightChild);
+        
+        if ((strcmp(root->info.expression, "EXPR") == 0)) {
+                printf(")");
+        }
+    }
+    return;
+}
+
+void printDisambiguatedExpression (void* self) {
+    ParseTree * this = ((ParseTree*)self);
+    
+    inorderWalk(this->root);
+}
+
+ParseTree * createParseTree() {
     ParseTree * obj = malloc(sizeof(ParseTree));
     if (obj == NULL) {
         longjmp(memoryAllocationException, 1);
@@ -158,6 +176,7 @@ ParseTree * createParseTree(void) {
         obj->addNode = addNode;
         obj->removeNode = removeNode;
         obj->printParseTree = printParseTree;
+        obj->printDisambiguatedExpression = printDisambiguatedExpression;
 
     return obj;
 }

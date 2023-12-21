@@ -11,6 +11,7 @@
 #include "lexer.h"
 #include "tokenString.h"
 #include "errorHandling.h"
+#include "abstractSyntaxTree.h"
 
 jmp_buf tokenStringException;
 jmp_buf memoryAllocationException;
@@ -48,7 +49,12 @@ void checkExpression(char **expression) {
             // build parse tree top down while doing the lexical analysis
             lexer->expr(parseTree, NULL, lexer);
             // parseTree->printParseTree(parseTree);
-            parseTree->printDisambiguatedExpression(parseTree);
+            // parseTree->printDisambiguatedExpression(parseTree);
+            AbstractSyntaxTree * abstractSyntaxTree = createAbstractSyntaxTree(parseTree);
+            abstractSyntaxTree->cleanUpTree(abstractSyntaxTree);
+            abstractSyntaxTree->print(abstractSyntaxTree->getRoot(abstractSyntaxTree), abstractSyntaxTree);
+
+            printf("\n");
         } else {
             printf("Error occurred::Lexical Analysis\n");
             destroyParseTree(parseTree);

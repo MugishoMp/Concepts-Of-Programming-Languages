@@ -7,11 +7,12 @@
  * 
  */
 
- #include <stdio.h>
- #include <stdlib.h>
- #include "fileReader.h"
- #include "expressionChecker.h"
- #include "errorHandling.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "fileReader.h"
+#include "expressionChecker.h"
+#include "errorHandling.h"
 
 
 jmp_buf env;
@@ -29,16 +30,27 @@ int main(int argc, char* argv[]) {
     if (readInput(&expression, argv[1])) {
 
         // try-catch block
-        if (isEmptyExpression(expression) == 0) {
+        char *subExpression;
+    
+        // Initialize strtok and get the first subExpression
+        subExpression = strtok(expression, "\n");
+        
+        // Loop through to get each sub-expression
+        while (subExpression != NULL) {
+            
             if (setjmp(env) == 0) {
                 // check expression per line
-                checkExpression(&expression);
+                checkExpression(&subExpression);
             } else {
                 // an error occurred
-                free(expression);
+                free(subExpression);
                 return 1;
             }
+
+            // Get the next subExpression
+            subExpression = strtok(NULL, "\n");
         }
+
 
         free(expression);
     } else {
