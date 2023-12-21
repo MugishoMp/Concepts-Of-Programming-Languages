@@ -54,7 +54,6 @@ void checkExpression(char **expression) {
             abstractSyntaxTree->cleanUpTree(abstractSyntaxTree);
             abstractSyntaxTree->print(abstractSyntaxTree->getRoot(abstractSyntaxTree), abstractSyntaxTree);
 
-            printf("\n");
         } else {
             printf("Error occurred::Lexical Analysis\n");
             destroyParseTree(parseTree);
