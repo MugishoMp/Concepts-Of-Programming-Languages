@@ -29,6 +29,7 @@ struct AbstractSyntaxTree {
     void (*remove)(Node *, AbstractSyntaxTree *);
     void (*cleanUpTree)(AbstractSyntaxTree *);
     void (*reduce)(AbstractSyntaxTree *);
+    bool (*possibleBetaReduction)(Node *, AbstractSyntaxTree *);
     void (*betaReduction)(Node *, bool *, AbstractSyntaxTree *);
     bool (*capturedVariable)(Node *, const char *, AbstractSyntaxTree *);
     bool (*hasVariable)(Node *, AbstractSyntaxTree *);

@@ -52,6 +52,7 @@ void checkExpression(char **expression) {
             // parseTree->printDisambiguatedExpression(parseTree);
             AbstractSyntaxTree * abstractSyntaxTree = createAbstractSyntaxTree(parseTree);
             abstractSyntaxTree->cleanUpTree(abstractSyntaxTree);
+            abstractSyntaxTree->reduce(abstractSyntaxTree);
             abstractSyntaxTree->print(abstractSyntaxTree->getRoot(abstractSyntaxTree), abstractSyntaxTree);
 
             printf("\n");

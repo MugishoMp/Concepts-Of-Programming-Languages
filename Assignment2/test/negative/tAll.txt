@@ -7,3 +7,5 @@ a (b
 a (b c))
 (\x
 x x))
+(\x (x x))(\x (x x))
+(\x x)((\x (x x))(\x (x x)))
