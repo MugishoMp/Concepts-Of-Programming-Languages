@@ -29,7 +29,6 @@ typedef struct {
     void (*addNode)(Node *, void*);
     void (*removeNode)(Node *, void*);
     void (*printParseTree)(void*);
-    void (*printDisambiguatedExpression)(void*);
     
 
 } ParseTree;

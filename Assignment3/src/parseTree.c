@@ -60,8 +60,12 @@ void addNode(Node * node, void* self) {
     }
     this->nodes = new_nodes;
     this->nodes[this->size] = node;
-
-    if (strcmp(node->parent->info.expression, "EXPR") == 0) {
+    if (strcmp(node->parent->info.expression, "JUDGEMENT") == 0) {
+        if (strcmp(node->info.expression, "EXPR") == 0) 
+            node->parent->leftChild = node;
+        else if (strcmp(node->info.expression, "TYPE") == 0) 
+            node->parent->rightChild = node;
+    } else if (strcmp(node->parent->info.expression, "EXPR") == 0) {
         if (strcmp(node->info.expression, "LEXPR") == 0) 
             node->parent->leftChild = node;
         else if (strcmp(node->info.expression, "EXPR1") == 0) 
@@ -82,6 +86,26 @@ void addNode(Node * node, void* self) {
         else if (strcmp(node->info.expression, "EXPR") == 0) 
             node->parent->singleChild = node;
     } else if (strcmp(node->parent->info.expression, "BACKSLASH") == 0) {
+        if (strcmp(node->info.expression, "LVAR") == 0) 
+            node->parent->leftChild = node;
+        else if (strcmp(node->info.expression, "TYPE") == 0) 
+            node->parent->singleChild = node;
+        else if (strcmp(node->info.expression, "LEXPR") == 0) 
+            node->parent->rightChild = node;
+    } else if (strcmp(node->parent->info.expression, "TYPE") == 0) {
+        if (strcmp(node->info.expression, "PTYPE") == 0) 
+            node->parent->leftChild = node;
+        else if (strcmp(node->info.expression, "TYPE1") == 0) 
+            node->parent->rightChild = node;
+    } else if (strcmp(node->parent->info.expression, "TYPE1") == 0) {
+        if (strcmp(node->info.expression, "PTYPE") == 0) 
+            node->parent->leftChild = node;
+        else if (strcmp(node->info.expression, "TYPE1") == 0) 
+            node->parent->rightChild = node;
+    } else if (strcmp(node->parent->info.expression, "PTYPE") == 0) {
+        if (strcmp(node->info.expression, "UVAR") == 0) 
+            node->parent->singleChild = node;
+        else if (strcmp(node->info.expression, "TYPE") == 0) 
             node->parent->singleChild = node;
     } 
     this->size++;
@@ -102,56 +126,6 @@ void printParseTree(void* self) {
         printf("parsetree index %d: %s\n", i, this->nodes[i]->info.expression);
     }
 
-}
-
-void inorderWalk(Node *root) {
-    if (root == NULL) {
-        return;
-    }
-
-    if (root->leftChild != NULL) {
-        // if this node has a direct
-        if ((strcmp(root->info.expression, "EXPR") == 0)) {
-                printf("(");
-        }
-        inorderWalk(root->leftChild);
-    }
-
-
-    // Visit the current node
-    if (strcmp(root->info.expression, "BACKSLASH") == 0)
-        printf("\\");
-
-    if ((strcmp(root->info.expression, "VARIABLE") == 0)) {
-            printf("(");
-    }
-    printf("%s", root->info.string);
-    if ((strcmp(root->info.expression, "VARIABLE") == 0)) {
-            printf(")");
-    }
-
-
-    // If the node has a single child, visit it next
-    if (root->singleChild != NULL) {
-        
-        inorderWalk(root->singleChild);
-    }
-
-    // If the node has a right child, visit it last
-    if (root->rightChild != NULL) {
-        inorderWalk(root->rightChild);
-        
-        if ((strcmp(root->info.expression, "EXPR") == 0)) {
-                printf(")");
-        }
-    }
-    return;
-}
-
-void printDisambiguatedExpression (void* self) {
-    ParseTree * this = ((ParseTree*)self);
-    
-    inorderWalk(this->root);
 }
 
 ParseTree * createParseTree() {
@@ -176,7 +150,6 @@ ParseTree * createParseTree() {
         obj->addNode = addNode;
         obj->removeNode = removeNode;
         obj->printParseTree = printParseTree;
-        obj->printDisambiguatedExpression = printDisambiguatedExpression;
 
     return obj;
 }

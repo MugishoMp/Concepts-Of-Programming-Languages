@@ -20,23 +20,12 @@ typedef struct {
     int numberOfOpenBrackets;
     TokenString * tokenString;
 
-    int (*getIndex)(void*);
-    void (*setIndex)(int, void*);
-    int (*getNumberOfOpenBrackets)(void*);
-    void (*setNumberOfOpenBrackets)(int, void*);
-    TokenString * (*getTokenString)(void*);
-    void (*setTokenString)(TokenString *, void*);
-
-    void (*expr) (ParseTree *, Node *, void*);
-    void (*expr1) (ParseTree *, Node *, void*);
-    void (*lexpr) (ParseTree *, Node *, void*);
-    void (*pexpr) (ParseTree *, Node *, void*);
-    bool (*isEmpty) (void*);
-    TokenStringPair * (*peek) (void*);
-    void (*consume) (void*);
+    void (*judgement) (ParseTree *, Node *, void*);
 
 
 } Lexer;
+
+
 
 // constructor 
 Lexer * createLexer(TokenString * tokenString);

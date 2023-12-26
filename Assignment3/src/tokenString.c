@@ -103,6 +103,39 @@ void tokenize(void* self) {
                 appendTokenStringPair(token, ((TokenString*)self));
                 break;
             }
+            case '^': {
+                TokenStringPair *token = malloc(sizeof(TokenStringPair));
+                if (token != NULL) {
+                    token->token = "ROOF";
+                    token->character = "^";
+                }
+                appendTokenStringPair(token, ((TokenString*)self));
+                break;
+            }
+            case ':': {
+                TokenStringPair *token = malloc(sizeof(TokenStringPair));
+                if (token != NULL) {
+                    token->token = "COLON";
+                    token->character = ":";
+                }
+                appendTokenStringPair(token, ((TokenString*)self));
+                break;
+            }
+            case '-': {
+                i++;
+                if (expression[i] != '>') { // if the next two characters are 
+                    printf("Error::TokenString::tokenizeVariable: ");
+                    printf("Arrow symbol not completed");
+                    longjmp(tokenStringException, 1);
+                }
+                TokenStringPair *token = malloc(sizeof(TokenStringPair));
+                if (token != NULL) {
+                    token->token = "ARROW";
+                    token->character = "->";
+                }
+                appendTokenStringPair(token, ((TokenString*)self));
+                break;
+            }
             default: {
                 TokenStringPair * token = ((TokenString*)self)->tokenizeVariable(&i, ((TokenString*)self));
                 if (token->character == NULL) {
@@ -116,6 +149,7 @@ void tokenize(void* self) {
 }
 
 TokenStringPair * tokenizeVariable(int *i, void* self) {
+    int indexFirstCharacter = *i;
     char *expression = getExpression((TokenString*)self);
     if (!(expression[*i]  >= 'A' && expression[*i] <= 'Z') 
         && !(expression[*i]  >= 'a' && expression[*i] <= 'z')
@@ -136,6 +170,7 @@ TokenStringPair * tokenizeVariable(int *i, void* self) {
     variableString[0] = '\0';  // Null-terminate the string
     size_t len = 0;  // Current length of the string
 
+
     while ((expression[*i]  >= 'A' && expression[*i] <= 'Z') 
         || (expression[*i]  >= 'a' && expression[*i] <= 'z')
         || (expression[*i]  >= '0' && expression[*i] <= '9')) {
@@ -144,11 +179,22 @@ TokenStringPair * tokenizeVariable(int *i, void* self) {
         
         *i += 1;
     }
+    
 
     *i -= 1;
     TokenStringPair *token = malloc(sizeof(TokenStringPair));
     if (token != NULL) {
-        token->token = "VARIABLE";
+
+        if(expression[indexFirstCharacter]  >= 'A' && expression[indexFirstCharacter] <= 'Z') 
+            token->token = "UVAR";
+        else if(expression[indexFirstCharacter]  >= 'a' && expression[indexFirstCharacter] <= 'z')
+            token->token = "LVAR";
+        else {
+            printf("Error::TokenString::tokenizeVariable: ");
+            printf("variable cannot start with number");
+            longjmp(tokenStringException, 1);
+        }
+
         token->character = variableString;
     }
     return token;

@@ -46,29 +46,28 @@ void checkExpression(char **expression) {
 
         if (setjmp(lexerException) == 0) {
 
-            // build parse tree top down while doing the lexical analysis
-            lexer->expr(parseTree, NULL, lexer);
-            // parseTree->printParseTree(parseTree);
-            // parseTree->printDisambiguatedExpression(parseTree);
-            AbstractSyntaxTree * abstractSyntaxTree = createAbstractSyntaxTree(parseTree);
-            abstractSyntaxTree->cleanUpTree(abstractSyntaxTree);
-            abstractSyntaxTree->reduce(abstractSyntaxTree);
-            abstractSyntaxTree->print(abstractSyntaxTree->getRoot(abstractSyntaxTree), abstractSyntaxTree);
-
-            printf("\n");
+            // // build parse tree top down while doing the lexical analysis
+            // tokenstring->printTokenString(tokenString);
+            lexer->judgement(parseTree, NULL, lexer);
+            // // parseTree->printParseTree(parseTree);
+            // // parseTree->printDisambiguatedExpression(parseTree);
+            // AbstractSyntaxTree * abstractSyntaxTree = createAbstractSyntaxTree(parseTree);
+            // abstractSyntaxTree->cleanUpTree(abstractSyntaxTree);
+            // abstractSyntaxTree->reduce(abstractSyntaxTree);
+            // abstractSyntaxTree->print(abstractSyntaxTree->getRoot(abstractSyntaxTree), abstractSyntaxTree);
         } else {
             printf("Error occurred::Lexical Analysis\n");
-            destroyParseTree(parseTree);
-            destroyLexer(lexer);
-            return;
+            // destroyParseTree(parseTree);
+            // destroyLexer(lexer);
+            // return;
         }
 
 
 
-        // CLEANUP
-        // destroyLexer will also take care of destroying the tokenString
-        destroyLexer(lexer);
-        destroyParseTree(parseTree);
+        // // CLEANUP
+        // // destroyLexer will also take care of destroying the tokenString
+        // destroyLexer(lexer);
+        // destroyParseTree(parseTree);
     } else {
         printf("Error occurred. problem allocating memory\n");
         return;
