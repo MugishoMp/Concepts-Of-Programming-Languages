@@ -70,12 +70,15 @@ void appendTokenStringPair(TokenStringPair *pair, void* self) {
 
 void tokenize(void* self) {
     char *expression = getExpression((TokenString*)self);
+    int openBrackets = 0;
+    int closedBrackets = 0;
     for (int i = 0; i < (int)strlen(expression); i++){
         
         switch (expression[i]) {
             case ' ':
                 break;
             case '(': {
+                openBrackets++;
                 TokenStringPair *token = malloc(sizeof(TokenStringPair));
                 if (token != NULL) {
                     token->token = "BRACKET_OPEN";
@@ -86,6 +89,7 @@ void tokenize(void* self) {
                 break;
             }
             case ')': {
+                closedBrackets++;
                 TokenStringPair *token = malloc(sizeof(TokenStringPair));
                 if (token != NULL) {
                     token->token = "BRACKET_CLOSE";
@@ -145,6 +149,11 @@ void tokenize(void* self) {
                 appendTokenStringPair(token, ((TokenString*)self));
             }
         }
+    }
+    if (openBrackets != closedBrackets) { // if the next two characters are 
+        printf("Error::TokenString::tokenizeVariable: ");
+        printf("Not equal number of open and closed brackets");
+        longjmp(tokenStringException, 1);
     }
 }
 

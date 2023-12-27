@@ -112,6 +112,7 @@ static void judgement(ParseTree * parseTree, Node * parentNode, void* self) {
     }
 
     type(parseTree, node, this);
+    // printf("number of unchecked brackets: %d", this->numberOfOpenBrackets);
 }
 
 //〈expr〉 ::= 〈lexpr〉〈expr′〉 
