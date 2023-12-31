@@ -35,6 +35,8 @@ static void alfaConversionAST(Node *, const char *, const char *, AbstractSyntax
 static void replaceVarAST(Node *, const char *, Node *, AbstractSyntaxTree *);
 static Node *copyTreeAST(Node *, Node *, AbstractSyntaxTree *);
 static void printAST(Node *, const AbstractSyntaxTree *);
+static void typeCheckingAST(Node *, const AbstractSyntaxTree *);
+static void typeCheckingASTHelper(Node *, const AbstractSyntaxTree *, char *[], int);
 
 AbstractSyntaxTree *createAbstractSyntaxTree(ParseTree *parseTree) {
     AbstractSyntaxTree *obj = malloc(sizeof(AbstractSyntaxTree));
@@ -54,6 +56,7 @@ AbstractSyntaxTree *createAbstractSyntaxTree(ParseTree *parseTree) {
     obj->remove = removeAST;
     obj->cleanUpTree = cleanUpTreeAST;
     obj->reduce = reduceAST;
+    obj->typeChecking = typeCheckingAST;
     obj->possibleBetaReduction = possibleBetaReductionAST;
     obj->betaReduction = betaReductionAST;
     obj->capturedVariable = capturedVariableAST;
@@ -339,3 +342,30 @@ static void printAST(Node *node, const AbstractSyntaxTree *this) {
     if (node == this->root) printf("\n");
 }
 
+static bool checkIfItHasAType(Node *node, const char *variable, const AbstractSyntaxTree *this) {
+    // Implementation
+    if (node == NULL) return false;
+
+
+
+    if (strcmp(node->info.expression, "BACKSLASH") == 0) {
+        if (strcmp(node->info.string, variable) == 0) return true;
+    }
+
+    return checkIfItHasAType(node->parent, variable, this);
+
+}
+
+static void typeCheckingAST(Node *node, const AbstractSyntaxTree *this) {
+    for (int i = 0; i < this->size; i++) {
+        Node * node = this->nodes[i];
+        if (strcmp(node->info.expression, "LVAR") == 0) {
+            // printf("%s", node->info.string);
+            
+            if (checkIfItHasAType(node, node->info.string, this) == false) {
+                printf("Error occured::typeCheckingAST::Variable does not have a type\n");
+                longjmp(lexerException, 1);
+            }
+        } 
+    }
+}

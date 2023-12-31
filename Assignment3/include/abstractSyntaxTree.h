@@ -37,6 +37,7 @@ struct AbstractSyntaxTree {
     void (*replaceVar)(Node *, const char *, Node *, AbstractSyntaxTree *);
     Node *(*copyTree)(Node *, Node *, AbstractSyntaxTree *);
     void (*print)(Node *, const AbstractSyntaxTree *);
+    void (*typeChecking)(Node *, const AbstractSyntaxTree *);
 };
 
 // Function declarations

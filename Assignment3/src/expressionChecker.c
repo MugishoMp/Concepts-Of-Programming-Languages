@@ -53,7 +53,7 @@ void checkExpression(char **expression) {
             // // parseTree->printDisambiguatedExpression(parseTree);
             AbstractSyntaxTree * abstractSyntaxTree = createAbstractSyntaxTree(parseTree);
             abstractSyntaxTree->cleanUpTree(abstractSyntaxTree);
-            // abstractSyntaxTree->reduce(abstractSyntaxTree);
+            abstractSyntaxTree->typeChecking(abstractSyntaxTree->getRoot(abstractSyntaxTree), abstractSyntaxTree);
             abstractSyntaxTree->print(abstractSyntaxTree->getRoot(abstractSyntaxTree), abstractSyntaxTree);
         } else {
             printf("Error occurred::Lexical Analysis\n");
