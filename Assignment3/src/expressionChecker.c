@@ -51,10 +51,10 @@ void checkExpression(char **expression) {
             lexer->judgement(parseTree, NULL, lexer);
             // // parseTree->printParseTree(parseTree);
             // // parseTree->printDisambiguatedExpression(parseTree);
-            // AbstractSyntaxTree * abstractSyntaxTree = createAbstractSyntaxTree(parseTree);
-            // abstractSyntaxTree->cleanUpTree(abstractSyntaxTree);
+            AbstractSyntaxTree * abstractSyntaxTree = createAbstractSyntaxTree(parseTree);
+            abstractSyntaxTree->cleanUpTree(abstractSyntaxTree);
             // abstractSyntaxTree->reduce(abstractSyntaxTree);
-            // abstractSyntaxTree->print(abstractSyntaxTree->getRoot(abstractSyntaxTree), abstractSyntaxTree);
+            abstractSyntaxTree->print(abstractSyntaxTree->getRoot(abstractSyntaxTree), abstractSyntaxTree);
         } else {
             printf("Error occurred::Lexical Analysis\n");
             // destroyParseTree(parseTree);

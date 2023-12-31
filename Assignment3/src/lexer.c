@@ -44,6 +44,7 @@ Lexer * createLexer(TokenString * tokenString) {
 
     // fields
         obj->index = 0;
+        // obj->judgementType = false;
         obj->numberOfOpenBrackets = 0;
         obj->tokenString = tokenString;
 
@@ -106,6 +107,7 @@ static void judgement(ParseTree * parseTree, Node * parentNode, void* self) {
 
     if (!(isEmpty(this)) && (strcmp(peek(this)->token, "COLON") == 0)) {
         consume(this);
+        // this->judgementType = true;
     } else {
         printf("Lexer::Error:: Missing colom\n");
         longjmp(lexerException, 1);
@@ -271,7 +273,7 @@ static void pexpr(ParseTree * parseTree, Node * parentNode, void* self) {
         parseTree->addNode(node2, parseTree);
         consume(this);
     } else {
-        printf("Lexer::Error:: Missing lower case variable\n");
+        printf("Lexer::Error:: Missing Variable\n");
         longjmp(lexerException, 1);
     }
 
@@ -283,7 +285,7 @@ static void type(ParseTree * parseTree, Node * parentNode, void* self) {
     Lexer * this = ((Lexer*)self);
 
     Node * node = malloc(sizeof(Node));
-    node->info.expression = "EXPR";
+    node->info.expression = "TYPE";
     node->info.string = "";
     node->parent = parentNode;
     node->singleChild = NULL;
@@ -315,6 +317,8 @@ static void type1(ParseTree * parseTree, Node * parentNode, void* self) {
         !(strcmp(peek(this)->token, "BRACKET_CLOSE") == 0 && this->numberOfOpenBrackets > 0) && 
         (strcmp(peek(this)->token, "ARROW") == 0)) {
 
+        node->info.string = "->";
+        
         consume(this);
         type(parseTree, node, this);
     }
@@ -369,7 +373,7 @@ static void ptype(ParseTree * parseTree, Node * parentNode, void* self) {
         parseTree->addNode(node2, parseTree);
         consume(this);
     } else {
-        printf("Lexer::Error:: Missing uppercase variable\n");
+        printf("Lexer::Error:: Missing Type\n");
         longjmp(lexerException, 1);
     }
 

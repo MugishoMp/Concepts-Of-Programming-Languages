@@ -18,6 +18,7 @@
 typedef struct {
     int index;
     int numberOfOpenBrackets;
+    // bool judgementType;
     TokenString * tokenString;
 
     void (*judgement) (ParseTree *, Node *, void*);

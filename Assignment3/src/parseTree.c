@@ -81,7 +81,7 @@ void addNode(Node * node, void* self) {
         else if (strcmp(node->info.expression, "BACKSLASH") == 0) 
             node->parent->singleChild = node;
     } else if (strcmp(node->parent->info.expression, "PEXPR") == 0) {
-        if (strcmp(node->info.expression, "VARIABLE") == 0)
+        if (strcmp(node->info.expression, "LVAR") == 0)
             node->parent->singleChild = node;
         else if (strcmp(node->info.expression, "EXPR") == 0) 
             node->parent->singleChild = node;
@@ -95,13 +95,11 @@ void addNode(Node * node, void* self) {
     } else if (strcmp(node->parent->info.expression, "TYPE") == 0) {
         if (strcmp(node->info.expression, "PTYPE") == 0) 
             node->parent->leftChild = node;
-        else if (strcmp(node->info.expression, "TYPE1") == 0) 
+        else if (strcmp(node->info.expression, "TYPE1") == 0)
             node->parent->rightChild = node;
     } else if (strcmp(node->parent->info.expression, "TYPE1") == 0) {
-        if (strcmp(node->info.expression, "PTYPE") == 0) 
-            node->parent->leftChild = node;
-        else if (strcmp(node->info.expression, "TYPE1") == 0) 
-            node->parent->rightChild = node;
+        if (strcmp(node->info.expression, "TYPE") == 0) 
+            node->parent->singleChild = node;
     } else if (strcmp(node->parent->info.expression, "PTYPE") == 0) {
         if (strcmp(node->info.expression, "UVAR") == 0) 
             node->parent->singleChild = node;

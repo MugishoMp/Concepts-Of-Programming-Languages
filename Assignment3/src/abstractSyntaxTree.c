@@ -96,6 +96,7 @@ static void cleanUpTreeAST(AbstractSyntaxTree *this) {
         Node * node = this->nodes[i];
         if (node->singleChild != NULL && 
             strcmp(node->info.expression, "BACKSLASH") != 0 && 
+            strcmp(node->info.expression, "TYPE1") != 0 &&
             strcmp(node->info.expression, "EMPTY") != 0) {
 
             node->singleChild->parent = node->parent;
@@ -114,6 +115,17 @@ static void cleanUpTreeAST(AbstractSyntaxTree *this) {
         } 
         if (strcmp(node->info.expression, "EXPR1") == 0) {
             if (node->leftChild == NULL && node->rightChild == NULL) {
+                // because expr is basically empty with no children
+                // we only need the left child which is lexpr
+                // because expr 1 can be empty
+                node->parent->singleChild = node->parent->leftChild;
+                node->parent->leftChild = NULL;
+                node->parent->rightChild = NULL;
+                node->info.expression = "EMPTY";
+            }
+        }
+        if (strcmp(node->info.expression, "TYPE1") == 0) {
+            if (node->singleChild == NULL) {
                 node->parent->singleChild = node->parent->leftChild;
                 node->parent->leftChild = NULL;
                 node->parent->rightChild = NULL;
@@ -124,7 +136,10 @@ static void cleanUpTreeAST(AbstractSyntaxTree *this) {
 
     for (int i = 1; i < this->size; i++) {
         Node * node = this->nodes[i];
-        if (node->singleChild != NULL && strcmp(node->info.expression, "BACKSLASH") != 0 && strcmp(node->info.expression, "EMPTY") != 0) {
+        if (node->singleChild != NULL && 
+            strcmp(node->info.expression, "BACKSLASH") != 0 &&
+            strcmp(node->info.expression, "TYPE1") != 0 && 
+            strcmp(node->info.expression, "EMPTY") != 0) {
             node->singleChild->parent = node->parent;
             if (node->parent->leftChild == node){
                 node->parent->leftChild = node->singleChild;
@@ -294,13 +309,22 @@ static void printAST(Node *node, const AbstractSyntaxTree *this) {
     if (node == NULL) return;
 
     int parentIndex = (node->parent == NULL) ? -1 : node->parent->index;
-
+    // if (strcmp(node->info.expression, "LVAR") == 0) {
+    //     printf("TESTESTEST\n");
+    //     printf("%s||||\n", node->info.string);
+    // }
     if (node->singleChild != NULL) {
         if (strcmp(node->info.expression, "BACKSLASH") == 0) {
             printf("(");
             printf("\\%s ", node->info.string);
+            printf("^");
             printAST(node->singleChild, this);
+            printAST(node->rightChild, this);
             printf(")");
+        } else if (strcmp(node->info.expression, "TYPE1") == 0) {
+            // printf("TEST\n");
+            printf("->");
+            printAST(node->singleChild, this);
         } else {
             printAST(node->singleChild, this);
             printf("%s", node->info.string);
