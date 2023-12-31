@@ -408,17 +408,17 @@ static void typeCheckingAST(Node *node, const AbstractSyntaxTree *this) {
         } 
     }
     
-    // for (int i = 0; i < this->size; i++) {
-    //     Node * node = this->nodes[i];
-
-    //     // checkIfDerivable(node, this);
-    //     if (strcmp(node->info.expression, "UVAR") == 0) {
-    //         char type[] = ""; // Initialize an empty character array
-    //         checkIfTypeIsDerivable(node, type, this);
-    //         printf("%s", node->info.string);
-    //     }
-    //     // if (strcmp(node->info.string, ":") == 0) {
-    //     //     printf("\n", node->info.string);
-    //     // } 
-    // }
+    for (int i = 0; i < this->size; i++) {
+        Node * node = this->nodes[i];
+        if (node->parent != NULL && strcmp(node->parent->info.string, ":") == 0 && node->parent->rightChild == node) break;
+        // checkIfDerivable(node, this);
+        if (strcmp(node->info.expression, "UVAR") == 0) {
+            // char type[] = ""; // Initialize an empty character array
+            // checkIfTypeIsDerivable(node, type, this);
+            printf("%s", node->info.string);
+        }
+        // if (strcmp(node->info.string, ":") == 0) {
+        //     printf("\n", node->info.string);
+        // } 
+    }
 }

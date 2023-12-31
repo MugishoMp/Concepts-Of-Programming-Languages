@@ -52,7 +52,7 @@ void checkExpression(char **expression) {
             // // parseTree->printParseTree(parseTree);
             // // parseTree->printDisambiguatedExpression(parseTree);
             AbstractSyntaxTree * abstractSyntaxTree = createAbstractSyntaxTree(parseTree);
-            abstractSyntaxTree->typeChecking(abstractSyntaxTree->getRoot(abstractSyntaxTree), abstractSyntaxTree);
+            // abstractSyntaxTree->typeChecking(abstractSyntaxTree->getRoot(abstractSyntaxTree), abstractSyntaxTree);
             abstractSyntaxTree->cleanUpTree(abstractSyntaxTree);
             abstractSyntaxTree->typeChecking(abstractSyntaxTree->getRoot(abstractSyntaxTree), abstractSyntaxTree);
             abstractSyntaxTree->print(abstractSyntaxTree->getRoot(abstractSyntaxTree), abstractSyntaxTree);
