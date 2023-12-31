@@ -356,6 +356,45 @@ static bool checkIfItHasAType(Node *node, const char *variable, const AbstractSy
 
 }
 
+static bool checkIfTypeIsDerivable(Node *node, char *variable, const AbstractSyntaxTree *this) {
+    // Implementation
+    if (node == NULL) return false;
+
+
+
+    if (strcmp(node->info.expression, "BACKSLASH") == 0) {
+        if (strcmp(node->info.string, variable) == 0) return true;
+    }
+
+    return checkIfItHasAType(node->parent, variable, this);
+
+}
+
+static void checkIfDerivable(Node *node, const AbstractSyntaxTree *this) {
+    // Implementation
+    if (node == NULL) return;
+
+    int parentIndex = (node->parent == NULL) ? -1 : node->parent->index;
+    if (node->singleChild != NULL) {
+        if (strcmp(node->info.expression, "BACKSLASH") == 0) {
+            checkIfDerivable(node->singleChild, this);
+            checkIfDerivable(node->rightChild, this);
+        } else if (strcmp(node->info.expression, "TYPE1") == 0) {
+            checkIfDerivable(node->singleChild, this);
+        } else {
+            checkIfDerivable(node->singleChild, this);
+        }
+    } else {
+        checkIfDerivable(node->leftChild, this);
+        // printf("%s", node->info.string);
+        if (strcmp(node->info.string, ":") == 0) {
+            printf("\n", node->info.string);
+        } 
+        checkIfDerivable(node->rightChild, this);
+    }
+    if (node == this->root) printf("\n");
+}
+
 static void typeCheckingAST(Node *node, const AbstractSyntaxTree *this) {
     for (int i = 0; i < this->size; i++) {
         Node * node = this->nodes[i];
@@ -368,4 +407,18 @@ static void typeCheckingAST(Node *node, const AbstractSyntaxTree *this) {
             }
         } 
     }
+    
+    // for (int i = 0; i < this->size; i++) {
+    //     Node * node = this->nodes[i];
+
+    //     // checkIfDerivable(node, this);
+    //     if (strcmp(node->info.expression, "UVAR") == 0) {
+    //         char type[] = ""; // Initialize an empty character array
+    //         checkIfTypeIsDerivable(node, type, this);
+    //         printf("%s", node->info.string);
+    //     }
+    //     // if (strcmp(node->info.string, ":") == 0) {
+    //     //     printf("\n", node->info.string);
+    //     // } 
+    // }
 }
